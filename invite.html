@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#fbf3f5"/>
+  <title>Thiệp mời sinh nhật Phương Anh</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ink:#382c31;--muted:#78666e;--rose:#a33b63;--rose-mid:#c96788;
+      --rose-pale:#f2dfe6;--paper:#fffdfb;--canvas:#fbf5f6;--line:#ead9df;
+      --shadow:0 18px 55px rgba(83,47,62,.09);
+    }
+    html{scroll-behavior:smooth;scroll-snap-type:y proximity}
+    body{font-family:'Be Vietnam Pro',sans-serif;background:var(--canvas);color:var(--ink);overflow-x:hidden;line-height:1.65}
+    #petal-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.38}
+    section{position:relative;z-index:1;min-height:100svh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(64px,9vh,100px) 24px;scroll-snap-align:start}
+    .anim{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
+    .anim.visible{opacity:1;transform:none}
+    .anim-delay-1{transition-delay:.1s}.anim-delay-2{transition-delay:.2s}.anim-delay-3{transition-delay:.3s}
+    .eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--rose-mid);text-align:center}
+    .display-title{font-family:'Playfair Display',serif;font-weight:600;color:var(--rose);font-size:clamp(2.15rem,6vw,4.2rem);line-height:1.12;text-align:center;letter-spacing:-.025em}
+    .section-title{font-family:'Playfair Display',serif;font-weight:600;color:var(--rose);font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.2;text-align:center}
+    .section-intro{color:var(--muted);font-size:.95rem;text-align:center;max-width:500px}
+
+    #sec-hero{gap:14px;text-align:center;background:radial-gradient(ellipse at 50% 25%,#fff 0%,#fbf2f5 55%,#f3e3e9 100%)}
+    .hero-top-label{letter-spacing:.2em;text-transform:uppercase;font-size:.7rem;font-weight:700;color:var(--rose-mid)}
+    .hero-name{font-family:'Playfair Display',serif;font-size:clamp(1.35rem,4vw,2rem);color:var(--muted);margin-top:-4px}
+    .hero-photo-wrap{width:min(240px,56vw);aspect-ratio:1;border-radius:50%;padding:7px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;margin:8px auto}
+    .hero-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:center 24%;border-radius:50%;display:block}
+    .hero-date{font-size:.82rem;letter-spacing:.22em;color:var(--muted);font-weight:600}
+    .scroll-hint{margin-top:28px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rose-mid)}
+    .text-link{display:inline-flex;align-items:center;justify-content:center;margin-top:8px;padding:12px 22px;border-radius:999px;background:var(--rose);color:white;text-decoration:none;font-size:.82rem;font-weight:600;transition:background .2s,transform .2s}
+    .text-link:hover{background:#832d50;transform:translateY(-2px)}
+
+    #sec-countdown{gap:22px;background:var(--paper)}
+    .countdown-grid{display:grid;grid-template-columns:repeat(4,minmax(68px,110px));gap:12px;max-width:520px;width:100%;justify-content:center}
+    .cd-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 12px 14px;text-align:center;box-shadow:0 6px 22px rgba(83,47,62,.04)}
+    .cd-num{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,2.65rem);line-height:1;color:var(--rose);font-variant-numeric:tabular-nums}
+    .cd-label{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:8px}
+    .party-started{font-size:1rem;color:var(--rose);font-weight:600;text-align:center}
+    .event-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:520px;width:100%;margin-top:8px}
+    .summary-item{background:#faf4f6;border-radius:12px;padding:14px 16px;text-align:left}
+    .summary-label{display:block;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--rose-mid);font-weight:700;margin-bottom:3px}
+    .summary-value{font-size:.88rem;font-weight:600;color:var(--ink)}
+
+    #sec-letter{background:linear-gradient(155deg,#f6e9ee,#fbf5f6 56%,#f4e6eb)}
+    .letter-card{position:relative;max-width:700px;width:100%;padding:clamp(28px,6vw,58px);background:var(--paper);border:1px solid var(--line);border-radius:8px 28px 8px 28px;box-shadow:var(--shadow)}
+    .letter-card::before{content:'';position:absolute;left:18px;top:24px;bottom:24px;width:1px;background:var(--rose-pale)}
+    .letter-hello{font-family:'Playfair Display',serif;color:var(--rose);font-size:1.5rem;margin-bottom:18px}
+    .letter-body{font-size:.96rem;line-height:1.9;color:#51444a}
+    .letter-body p+p{margin-top:14px}
+    .letter-sig{margin-top:24px;text-align:right;color:var(--rose);font-family:'Playfair Display',serif;font-size:1.2rem}
+
+    #sec-photos{gap:18px;background:var(--paper)}
+    .photo-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:12px;max-width:900px;width:100%;margin-top:10px;align-items:stretch}
+    .photo-frame{min-width:0;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:#f3e6ea;border:1px solid var(--line);box-shadow:0 8px 28px rgba(83,47,62,.07)}
+    .photo-frame:first-child{aspect-ratio:4/5}
+    .photo-frame img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 22%}
+    .photo-frame-fallback{height:100%;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;color:var(--muted);font-size:.8rem}
+
+    #sec-calendar{gap:20px;background:#f8eef2}
+    .details-layout{display:grid;grid-template-columns:minmax(260px,360px) minmax(280px,380px);gap:24px;align-items:center;width:min(800px,100%);margin-top:8px}
+    .cal-card,.location-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 8px 28px rgba(83,47,62,.05)}
+    .cal-month-label{font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--rose);text-align:center}
+    .cal-year{font-size:.72rem;letter-spacing:.17em;color:var(--muted);text-align:center;margin:2px 0 16px}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+    .cal-head,.cal-day{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:50%}
+    .cal-head{font-size:.63rem;color:var(--muted);font-weight:700}
+    .cal-day{font-size:.78rem;color:var(--ink)}
+    .cal-day.empty{visibility:hidden}
+    .cal-day.today{background:var(--rose);color:white;font-weight:700}
+    .location-card{padding:28px}
+    .location-title{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--rose);margin-bottom:18px}
+    .loc-row{padding:12px 0;border-top:1px solid var(--line)}
+    .loc-label{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--rose-mid);font-weight:700}
+    .loc-value{font-size:.9rem;font-weight:600;color:var(--ink);margin-top:2px}
+    .closing-line{font-family:'Playfair Display',serif;color:var(--rose);font-size:1.25rem;text-align:center;margin-top:2px}
+
+    .scroll-nav{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:10;display:flex;flex-direction:column;gap:9px;padding:10px 7px;border-radius:20px;background:rgba(255,253,251,.72);backdrop-filter:blur(8px)}
+    .scroll-dot{width:7px;height:7px;border:0;border-radius:50%;background:#d8c0c9;cursor:pointer;transition:background .2s,transform .2s;padding:0}
+    .scroll-dot.active{background:var(--rose);transform:scale(1.35)}
+    .hidden{display:none!important}
+    @media(max-width:680px){
+      section{padding:68px 20px;min-height:100svh}
+      .countdown-grid{grid-template-columns:repeat(4,minmax(55px,1fr));gap:7px}
+      .cd-box{padding:15px 7px 12px;border-radius:12px}
+      .cd-label{font-size:.55rem;letter-spacing:.08em}
+      .event-summary{gap:8px}.summary-item{padding:12px}
+      .photo-grid{grid-template-columns:1fr 1fr;gap:9px}
+      .photo-frame:first-child{grid-row:span 2;aspect-ratio:2/3}
+      .photo-frame{aspect-ratio:1/1}
+      .details-layout{grid-template-columns:1fr;gap:14px;max-width:420px}
+      .cal-card,.location-card{padding:20px}
+      .scroll-nav{right:8px;padding:9px 6px}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.anim{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+<canvas id="petal-canvas" aria-hidden="true"></canvas>
+<nav class="scroll-nav" id="scrollNav" aria-label="Đi đến từng phần">
+  <button class="scroll-dot" type="button" aria-label="Phần đầu" onclick="scrollToSec(0)"></button>
+  <button class="scroll-dot" type="button" aria-label="Đếm ngược" onclick="scrollToSec(1)"></button>
+  <button class="scroll-dot" type="button" aria-label="Thư mời" onclick="scrollToSec(2)"></button>
+  <button class="scroll-dot" type="button" aria-label="Ảnh" onclick="scrollToSec(3)"></button>
+  <button class="scroll-dot" type="button" aria-label="Thời gian và địa điểm" onclick="scrollToSec(4)"></button>
+</nav>
+
+<section id="sec-hero">
+  <p class="hero-top-label anim">Thiệp mời đến buổi học thêm</p>
+  <h1 class="display-title anim anim-delay-1">Sinh nhật<br/>Phương Anh</h1>
+  <p class="hero-name anim anim-delay-2">Bạn được mời đến để học cùng</p>
+  <div class="hero-photo-wrap anim anim-delay-2"><img src="photo1.jpg" alt="Phương Anh"/></div>
+  <p class="hero-date anim anim-delay-3">13 · 11 · 2026</p>
+  <a class="text-link anim anim-delay-3" href="#sec-letter">Đọc lời mời</a>
+  <p class="scroll-hint anim anim-delay-3">Cuộn xuống để xem thêm</p>
+</section>
+
+<section id="sec-countdown">
+  <p class="eyebrow anim">Ngày đặc biệt</p>
+  <h2 class="section-title anim anim-delay-1">Cùng đếm đến giờ học</h2>
+  <p class="section-intro anim anim-delay-1">Một buổi tối vui vẻ đang chờ chúng ta.</p>
+  <div class="countdown-grid" id="countdownGrid">
+    <div class="cd-box anim anim-delay-1"><div class="cd-num" id="cd-d">00</div><div class="cd-label">Ngày</div></div>
+    <div class="cd-box anim anim-delay-1"><div class="cd-num" id="cd-h">00</div><div class="cd-label">Giờ</div></div>
+    <div class="cd-box anim anim-delay-2"><div class="cd-num" id="cd-m">00</div><div class="cd-label">Phút</div></div>
+    <div class="cd-box anim anim-delay-2"><div class="cd-num" id="cd-s">00</div><div class="cd-label">Giây</div></div>
+  </div>
+  <p class="party-started hidden anim" id="partyStarted">Hôm đó mình gặp nhau nhé.</p>
+  <div class="event-summary anim anim-delay-3">
+    <div class="summary-item"><span class="summary-label">Thời gian</span><span class="summary-value">18:00 · 13/11/2026</span></div>
+    <div class="summary-item"><span class="summary-label">Địa điểm</span><span class="summary-value">Bí mật</span></div>
+  </div>
+</section>
+
+<section id="sec-letter">
+  <p class="eyebrow anim">Một lời nhắn</p>
+  <article class="letter-card anim anim-delay-1">
+    <h2 class="letter-hello">Gửi bạn,</h2>
+    <div class="letter-body">
+      <p>Nhân dịp sinh nhật của tôi — người học lén nhiều nhất nhóm.</p>
+      <p>Tôi không muốn  phải mang danh học lén một mình nữa, Tôi muốn mời mí bạn đến để học nhóm cùng với tôi.</p>
+      <p>Không cần chuẩn bị gì. Chỉ cần bạn có mặt, cùng học, núa sấu và en ún thật no là buổi học đã trọn vẹn rồi. Phải có ảnh đẹp nữa nhé.</p>
+      <p>Sự hiện diện của các bạn chính là bằng chứng để sau này tôi không bị mang danh là kẻ học lén nữa. Rất mong mí bạn đến học đầy đủ~</p>
+      <p>Hẹn gặp mí bạn nhé.</p>
+    </div>
+    <p class="letter-sig">Thân mến,<br/>Phương Anh</p>
+  </article>
+</section>
+
+<section id="sec-photos">
+  <p class="eyebrow anim">Tiện khoe vài bức ảnh đẹp của </p>
+  <h2 class="section-title anim anim-delay-1">Phương Anh</h2>
+  <p class="section-intro anim anim-delay-1">Xem và khen cho chuỵ !!</p>
+  <div class="photo-grid">
+    <div class="photo-frame anim anim-delay-1"><img src="photo1.jpg" alt="Phương Anh, ảnh thứ nhất"/></div>
+    <div class="photo-frame anim anim-delay-2"><img src="photo4.png" alt="Phương Anh, ảnh thứ hai"/></div>
+    <div class="photo-frame anim anim-delay-3"><img src="photo3.jpg" alt="Phương Anh, ảnh thứ ba"/></div>
+  </div>
+</section>
+
+<section id="sec-calendar">
+  <p class="eyebrow anim">Thông tin buổi học thêm</p>
+  <h2 class="section-title anim anim-delay-1">Hẹn gặp mí bạn</h2>
+  <div class="details-layout">
+    <div class="cal-card anim anim-delay-1">
+      <div class="cal-month-label">Tháng 11</div>
+      <div class="cal-year">2026</div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <div class="location-card anim anim-delay-2">
+      <h3 class="location-title">Sinh nhật Phương Anh</h3>
+      <div class="loc-row"><div class="loc-label">Ngày</div><div class="loc-value">Thứ Sáu · 13/11/2026</div></div>
+      <div class="loc-row"><div class="loc-label">Thời gian</div><div class="loc-value">18:00</div></div>
+      <div class="loc-row"><div class="loc-label">Địa điểm</div><div class="loc-value">Đi rồi sẽ biết</div></div>
+    </div>
+  </div>
+  <p class="closing-line anim anim-delay-3">Mong được gặp mấy bạn lắm.</p>
+</section>
+
+<script>
+const canvas = document.getElementById('petal-canvas');
+const ctx = canvas.getContext('2d');
+let width = 0, height = 0, petals = [];
+const petalColors = ['#e9bdcc', '#d99aae', '#f0d5de'];
+function resizeCanvas(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  width = window.innerWidth; height = window.innerHeight;
+  canvas.width = width * dpr; canvas.height = height * dpr;
+  canvas.style.width = width + 'px'; canvas.style.height = height + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+function makePetal(initial = false){
+  return {x:Math.random()*width,y:initial?Math.random()*height:-12,size:3+Math.random()*4,speed:.35+Math.random()*.55,drift:(Math.random()-.5)*.35,angle:Math.random()*Math.PI,turn:(Math.random()-.5)*.008,color:petalColors[Math.floor(Math.random()*petalColors.length)]};
+}
+function drawPetals(){
+  ctx.clearRect(0,0,width,height);
+  petals.forEach(p=>{
+    p.y+=p.speed;p.x+=p.drift+Math.sin(p.y*.012)*.25;p.angle+=p.turn;
+    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle);ctx.globalAlpha=.42;ctx.fillStyle=p.color;
+    ctx.beginPath();ctx.ellipse(0,0,p.size,p.size*.55,0,0,Math.PI*2);ctx.fill();ctx.restore();
+    if(p.y>height+12){Object.assign(p,makePetal());p.y=-12;}
+  });
+  requestAnimationFrame(drawPetals);
+}
+function initPetals(){resizeCanvas();petals=Array.from({length:18},()=>makePetal(true));drawPetals();}
+initPetals();window.addEventListener('resize',resizeCanvas);
+
+const partyDate = new Date('2026-11-13T18:00:00+07:00');
+function updateCountdown(){
+  const diff = partyDate.getTime()-Date.now();
+  const grid = document.getElementById('countdownGrid');
+  const started = document.getElementById('partyStarted');
+  if(diff<=0){grid.classList.add('hidden');started.classList.remove('hidden');return;}
+  const values=[Math.floor(diff/864e5),Math.floor(diff%864e5/36e5),Math.floor(diff%36e5/6e4),Math.floor(diff%6e4/1e3)];
+  ['d','h','m','s'].forEach((key,i)=>document.getElementById('cd-'+key).textContent=String(values[i]).padStart(2,'0'));
+}
+updateCountdown();setInterval(updateCountdown,1000);
+
+(function buildCalendar(){
+  const grid=document.getElementById('calGrid');
+  ['T2','T3','T4','T5','T6','T7','CN'].forEach(day=>{const cell=document.createElement('div');cell.className='cal-head';cell.textContent=day;grid.appendChild(cell);});
+  const offset=6;
+  for(let i=0;i<offset;i++){const cell=document.createElement('div');cell.className='cal-day empty';grid.appendChild(cell);}
+  for(let day=1;day<=30;day++){const cell=document.createElement('div');cell.className='cal-day'+(day===13?' today':'');cell.textContent=day;grid.appendChild(cell);}
+})();
+
+const sectionIds=['sec-hero','sec-countdown','sec-letter','sec-photos','sec-calendar'];
+function scrollToSec(index){document.getElementById(sectionIds[index])?.scrollIntoView({behavior:'smooth'});}
+const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.anim').forEach(element=>revealObserver.observe(element));
+const navObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{const index=sectionIds.indexOf(entry.target.id);if(index>=0)document.querySelectorAll('.scroll-dot')[index].classList.toggle('active',entry.isIntersecting);}),{threshold:.55});
+sectionIds.forEach(id=>{const section=document.getElementById(id);if(section)navObserver.observe(section);});
+</script>
+</body>
+</html>

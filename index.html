@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thiệp sinh nhật 13/11</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- Supabase CDN — xóa nếu không dùng -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <style>
+    /* ============================================================
+       BASE
+    ============================================================ */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --pink-light:#fce8ef;--pink-mid:#e9b9cb;
+      --pink:#c95583;--pink-deep:#9f345f;
+      --cream:#fff9fb;--text:#402d35;
+      --shadow:rgba(96,42,62,.12);
+    }
+    body{
+      font-family:'Be Vietnam Pro',sans-serif;
+      background:linear-gradient(135deg,#f8eaf0 0%,#fff8fb 52%,#f6e7ee 100%);
+      min-height:100vh;display:flex;align-items:center;justify-content:center;
+      overflow-x:hidden;color:var(--text);
+    }
+
+    /* ============================================================
+       ẢNH CHÂN DUNG BAY NỀN
+    ============================================================ */
+    .particle-container{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .particle{position:absolute;bottom:-90px;animation:floatUp linear infinite;user-select:none}
+    .photo-particle{object-fit:cover;object-position:center 24%;border-radius:50%;border:3px solid rgba(255,255,255,.94);box-shadow:0 4px 18px rgba(77,44,57,.2);opacity:.72}
+    @keyframes floatUp{
+      0%  {transform:translateY(0) rotate(0deg) scale(1);opacity:.65}
+      50% {opacity:.8}
+      100%{transform:translateY(-115vh) rotate(360deg) scale(.8);opacity:0}
+    }
+
+    /* ============================================================
+       CARD
+    ============================================================ */
+    .card{
+      position:relative;z-index:1;
+      background:rgba(255,255,255,.94);backdrop-filter:blur(8px);
+      border-radius:24px;padding:38px 36px;
+      max-width:520px;width:92%;
+      box-shadow:0 12px 38px var(--shadow);
+      border:2px solid rgba(255,179,209,.5);
+      animation:cardIn .7s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes cardIn{from{opacity:0;transform:scale(.85) translateY(30px)}to{opacity:1;transform:none}}
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+    h1{font-family:'Be Vietnam Pro',sans-serif;font-size:2rem;color:var(--pink-deep);letter-spacing:-.035em;text-align:center;margin-bottom:6px}
+    .subtitle{text-align:center;color:var(--pink);font-size:.93rem;margin-bottom:26px;font-weight:600}
+    .step-label{font-size:.75rem;color:var(--pink);text-align:center;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+    .question-text{font-size:1.3rem;font-weight:700;text-align:center;color:var(--text);margin-bottom:4px;line-height:1.4}
+    .question-sub{font-size:.88rem;text-align:center;color:var(--pink);margin-bottom:4px;font-weight:600}
+
+    /* ============================================================
+       INPUTS
+    ============================================================ */
+    input[type=text],input[type=password]{
+      width:100%;padding:14px 20px;border-radius:999px;
+      border:2px solid var(--pink-mid);background:var(--cream);
+      font-family:'Be Vietnam Pro',sans-serif;font-size:1rem;color:var(--text);
+      outline:none;transition:border-color .25s,box-shadow .25s;
+      text-align:center;letter-spacing:.08em;
+    }
+    input:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,173,.15)}
+    textarea{
+      width:100%;padding:16px 20px;border-radius:20px;
+      border:2px solid var(--pink-mid);background:var(--cream);
+      font-family:'Be Vietnam Pro',sans-serif;font-size:1rem;color:var(--text);
+      outline:none;resize:none;min-height:100px;line-height:1.6;
+      transition:border-color .25s,box-shadow .25s;
+    }
+    textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,111,173,.15)}
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:13px 28px;border-radius:999px;border:none;
+      font-family:'Be Vietnam Pro',sans-serif;font-weight:700;font-size:.97rem;
+      cursor:pointer;transition:transform .15s,box-shadow .15s;
+    }
+    .btn:active{transform:scale(.96)}
+    .btn-primary{background:linear-gradient(135deg,var(--pink),var(--pink-deep));color:white;box-shadow:0 4px 18px rgba(214,51,108,.35)}
+    .btn-primary:hover{box-shadow:0 6px 24px rgba(214,51,108,.45);transform:translateY(-2px)}
+    .btn-yes{background:linear-gradient(135deg,#ff6fad,#ff3d8b);color:white;box-shadow:0 4px 14px rgba(255,61,139,.3)}
+    .btn-no{background:linear-gradient(135deg,#b0e0e6,#7ec8d4);color:#2a5f6a;box-shadow:0 4px 14px rgba(126,200,212,.3)}
+    .btn-row{display:flex;gap:12px;justify-content:center;margin-top:18px}
+    .full-width{width:100%}
+
+    /* ============================================================
+       PROGRESS
+    ============================================================ */
+    .progress-row{display:flex;gap:8px;justify-content:center;margin-bottom:24px}
+    .progress-dot{width:10px;height:10px;border-radius:50%;background:var(--pink-mid);transition:background .3s,transform .3s}
+    .progress-dot.active{background:var(--pink);transform:scale(1.3)}
+    .progress-dot.done{background:var(--pink-deep)}
+
+    /* ============================================================
+       NAME BADGE
+    ============================================================ */
+    .name-display{
+      display:inline-flex;align-items:center;flex-wrap:wrap;gap:6px;
+      background:linear-gradient(135deg,var(--pink-light),var(--pink-mid));
+      border-radius:999px;padding:7px 20px;
+      font-weight:700;font-size:1.05rem;color:var(--pink-deep);
+      border:2px solid var(--pink-mid);box-shadow:0 2px 12px var(--shadow);
+      margin:0 auto 14px;
+    }
+    .badge-title{
+      display:inline-flex;align-items:center;gap:3px;
+      background:linear-gradient(135deg,#ffd6e7,#ffb3d1);
+      border-radius:999px;padding:2px 10px;
+      font-size:.72rem;font-weight:700;color:var(--pink-deep);
+      border:1.5px solid var(--pink);box-shadow:0 1px 6px var(--shadow);
+      white-space:nowrap;
+    }
+
+        .capy-art{display:block;width:auto;height:168px;max-width:100%;object-fit:contain;margin:0 auto}
+    .capy-art.security{height:150px}
+    .hint{font-size:.88rem;color:#755d67;text-align:center;margin:-8px 0 16px;line-height:1.5}
+    @media(max-width:520px){.card{padding:30px 22px;border-radius:20px}.capy-art{height:145px}.capy-art.security{height:132px}}
+
+    /* ============================================================
+       CAPY SVG
+    ============================================================ */
+    .capy-wrapper{display:flex;justify-content:center;margin:14px 0}
+    .capy-svg{filter:drop-shadow(0 4px 12px rgba(214,51,108,.2))}
+
+    /* ============================================================
+       WARNING SCREEN
+    ============================================================ */
+    .warn-wrap{text-align:center;animation:warnSlam .5s cubic-bezier(.36,.07,.19,.97) both}
+    @keyframes warnSlam{
+      0%  {opacity:0;transform:scale(.5) rotate(-10deg)}
+      70% {transform:scale(1.08) rotate(2deg)}
+      100%{opacity:1;transform:scale(1) rotate(0)}
+    }
+    .warn-banner{
+      background:#fff8fa;
+      border:1px solid #ead3dc;border-radius:18px;
+      padding:28px 24px;margin-bottom:16px;
+      position:relative;overflow:hidden;
+    }
+    .warn-banner::before{
+      content:'';position:absolute;inset:0;
+      pointer-events:none;
+    }
+    .warn-title-text{font-family:'Be Vietnam Pro',sans-serif;font-size:1.5rem;color:var(--pink-deep);margin-bottom:10px}
+    .warn-body{font-size:.93rem;color:var(--text);line-height:1.65;font-weight:500}
+    .warn-danger-pill{display:inline-block;background:var(--pink-light);color:var(--pink-deep);border-radius:999px;padding:5px 14px;font-size:.8rem;font-weight:700;margin-top:12px}
+    .warn-progress-bar{width:100%;height:4px;background:var(--pink-light);border-radius:999px;overflow:hidden;margin:16px 0 10px}
+    .warn-progress-fill{height:100%;background:var(--pink);border-radius:999px;width:100%;transition:width 1s linear}
+
+    /* ============================================================
+       ENVELOPE SCREEN
+    ============================================================ */
+    .envelope-wrap{animation:envReveal .9s cubic-bezier(.34,1.56,.64,1) both}
+    @keyframes envReveal{from{opacity:0;transform:scale(.6) rotateY(30deg)}to{opacity:1;transform:none}}
+    .envelope-card{
+      position:relative;cursor:pointer;border-radius:22px;overflow:hidden;
+      background:repeating-linear-gradient(90deg,#f6e5e7 0 28px,#fffaf7 28px 56px);
+      border:1px solid #ead0d8;box-shadow:0 18px 42px rgba(103,56,72,.16);
+      padding-top:80%;transition:transform .28s,box-shadow .28s;
+    }
+    .envelope-card:hover{transform:translateY(-3px);box-shadow:0 22px 48px rgba(103,56,72,.2)}
+    .env-flap{position:absolute;top:0;left:0;right:0;height:54%;background:linear-gradient(160deg,#f3cbd5,#e9b4c4);clip-path:polygon(0 0,100% 0,50% 100%);z-index:2;filter:drop-shadow(0 4px 3px rgba(103,56,72,.12))}
+    .env-flap-left{position:absolute;bottom:0;left:0;width:53%;height:62%;background:linear-gradient(120deg,#fff7f6,#f8e5e8);clip-path:polygon(0 100%,100% 50%,0 0);z-index:1}
+    .env-flap-right{position:absolute;bottom:0;right:0;width:53%;height:62%;background:linear-gradient(240deg,#fff7f6,#f8e5e8);clip-path:polygon(100% 100%,0 50%,100% 0);z-index:1}
+    .env-body{position:absolute;top:7%;left:10%;right:10%;height:76%;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:4;padding:14px 16px;text-align:center;pointer-events:none;background:rgba(255,250,248,.97);border:1px solid #ead0d8;border-radius:8px;box-shadow:0 8px 22px rgba(103,56,72,.12)}
+    .env-kicker{font-size:.62rem;font-weight:700;letter-spacing:.2em;color:#8c596b;text-transform:uppercase;margin-bottom:5px}
+    .env-label{font-family:'Be Vietnam Pro',sans-serif;font-size:clamp(1.1rem,3.6vw,1.55rem);line-height:1.12;font-weight:700;letter-spacing:.04em;color:#8b3155;text-transform:uppercase}
+    .env-invite-line{font-size:.75rem;font-weight:500;letter-spacing:.11em;color:#684b55;margin-top:5px;text-transform:uppercase}
+    .env-monogram{font-size:1rem;font-weight:700;letter-spacing:.2em;color:#8b3155;border-top:1px solid rgba(139,49,85,.35);border-bottom:1px solid rgba(139,49,85,.35);padding:4px 14px;margin:6px 0 2px}
+    .env-guest-name{display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:center;margin:4px 0 0}
+    .env-name{font-size:.9rem;font-weight:700;color:#633d4c;line-height:1.25}
+    #envGuestBadges{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px;max-width:100%}
+    #envGuestBadges .badge-title{margin:0;font-size:.68rem;padding:3px 9px}
+    .env-tap{font-size:.65rem;color:#765260;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-top:7px}
+    .env-date{font-size:.68rem;color:#8c596b;letter-spacing:.18em;margin-top:3px}
+    @media(max-width:520px){.envelope-card{padding-top:86%}.env-body{top:6%;left:8%;right:8%;height:78%;padding:10px 8px}.env-kicker{font-size:.55rem}.env-label{font-size:clamp(1rem,5vw,1.3rem)}.env-invite-line{font-size:.66rem}.env-tap{font-size:.57rem}.env-date{font-size:.6rem}#envGuestBadges .badge-title{font-size:.58rem;padding:3px 7px}}
+
+    /* ============================================================
+       CONFETTI
+    ============================================================ */
+    .confetti-piece{position:fixed;width:10px;height:10px;border-radius:2px;animation:confettiFall linear forwards;pointer-events:none;z-index:9999}
+    @keyframes confettiFall{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+    /* ============================================================
+       HELPERS
+    ============================================================ */
+    .text-center{text-align:center}
+    .mt-4{margin-top:16px}
+    .hidden{display:none!important}
+    .input-wrap{position:relative;margin-bottom:18px}
+    .error-msg{color:#d6336c;font-size:.85rem;text-align:center;margin-top:10px;font-weight:600}
+    .error-shake{animation:shake .4s ease both}
+    @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+    .slide-enter{animation:slideIn .5s cubic-bezier(.34,1.56,.64,1) both}
+    @keyframes slideIn{from{opacity:0;transform:translateX(40px) scale(.95)}to{opacity:1;transform:none}}
+
+    /* ============================================================
+       SUCCESS MSG
+    ============================================================ */
+    .save-status{font-size:.82rem;text-align:center;margin-top:8px;font-weight:600;min-height:20px;color:var(--pink)}
+  </style>
+</head>
+<body>
+<div class="particle-container" id="particles"></div>
+
+<div class="card" id="mainCard">
+
+  <!-- ===================== SCREEN: PASSWORD ===================== -->
+  <div id="screen-pwd">
+    <div class="lock-icon" aria-hidden="true"></div>
+    <h1>Mật Khẩu Bí Mật</h1>
+    <p class="subtitle">Chỉ người được mời mới được vào~ </p>
+    <p class="hint">Gợi ý: Phương Anh sinh ngày bao nhiêu?</p>
+    <div class="input-wrap">
+      <input type="password" id="pwdInput" maxlength="4" placeholder="Nhập mật khẩu 4 số"
+             onkeydown="if(event.key==='Enter')checkPwd()" inputmode="numeric"/>
+    </div>
+    <div id="pwdError" class="error-msg hidden">Sai rồi nha~ Thử lại đi </div>
+    <div class="text-center mt-4">
+      <button class="btn btn-primary" onclick="checkPwd()"> Vào thôi!</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: NAME ===================== -->
+  <div id="screen-name" class="hidden">
+    <div class="progress-row">
+      <div class="progress-dot active"></div><div class="progress-dot"></div>
+      <div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div>
+    </div>
+    <div class="step-label">Bước 1 / 5</div>
+    <!-- Thay tên người gửi bên dưới nếu cần -->
+    <h1>Chào Bạn iu của Phương Anh! </h1>
+    <p class="subtitle">Cho tui biết bạn là ai nào~</p>
+    <div class="capy-wrapper"><img class="capy-art" src="capybara/1.png" alt="Capybara vẽ tay"></div>
+    <div class="input-wrap">
+      <input type="text" id="nameInput" placeholder="Tên của bạn là..." maxlength="30"
+             onkeydown="if(event.key==='Enter')submitName()"/>
+    </div>
+    <div id="nameError" class="error-msg hidden">Nhập tên vào đi nha </div>
+    <div class="text-center mt-4">
+      <button class="btn btn-primary" onclick="submitName()">Tiếp theo →</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: SNAKE ===================== -->
+  <div id="screen-snake" class="hidden">
+    <div class="progress-row">
+      <div class="progress-dot done"></div><div class="progress-dot active"></div>
+      <div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div>
+    </div>
+    <div class="step-label">Bước 2 / 5</div>
+    <div class="text-center" style="margin-bottom:12px">
+      <span class="name-display" id="snakeBadge"><span id="snakeNameLabel">Lanh</span></span>
+    </div>
+    <div class="question-text">Bạn có phải là rắn không?</div>
+    <div class="question-sub">Hãy thành thật nha~</div>
+    <div class="capy-wrapper"><img class="capy-art" src="capybara/Pasted 2026-11-11 at 1.08.12 PM.png" alt="Capybara chỉ vào hình rắn"></div>
+    <div class="btn-row">
+      <button class="btn btn-yes" onclick="answerAnimal('snake',true)"> Phải, tôi là rắn chúa!</button>
+      <button class="btn btn-no" onclick="answerAnimal('snake',false)">Không phải~</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: FROG ===================== -->
+  <div id="screen-frog" class="hidden">
+    <div class="progress-row">
+      <div class="progress-dot done"></div><div class="progress-dot done"></div>
+      <div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div>
+    </div>
+    <div class="step-label">Bước 3 / 5</div>
+    <div class="text-center" style="margin-bottom:12px">
+      <span class="name-display" id="frogBadge"><span id="frogNameLabel">Lanh</span></span>
+    </div>
+    <div class="question-text">Vậy bạn có phải là ếch không?</div>
+    <div class="question-sub">Nhảy ra đây rồi trả lời nào~</div>
+    <div class="capy-wrapper"><img class="capy-art" src="capybara/Pasted 2026-11-11 at 1.08.47 PM.png" alt="Capybara chỉ vào hình ếch"></div>
+    <div class="btn-row">
+      <button class="btn btn-yes" onclick="answerAnimal('frog',true)"> Đúng, là tôi!</button>
+      <button class="btn btn-no" onclick="answerAnimal('frog',false)">Không phải ếch~</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: COW ===================== -->
+  <div id="screen-cow" class="hidden">
+    <div class="progress-row">
+      <div class="progress-dot done"></div><div class="progress-dot done"></div>
+      <div class="progress-dot done"></div><div class="progress-dot active"></div><div class="progress-dot"></div>
+    </div>
+    <div class="step-label">Bước 4 / 5</div>
+    <div class="text-center" style="margin-bottom:12px">
+      <span class="name-display" id="cowBadge"><span id="cowNameLabel">Lanh</span></span>
+    </div>
+    <div class="question-text">Cuối cùng... bạn có phải là bò không?</div>
+    <div class="question-sub">Nghĩ kỹ trước khi trả lời nha~</div>
+    <div class="capy-wrapper"><img class="capy-art" src="capybara/Pasted 2026-11-11 at 1.08.29 PM.png" alt="Capybara chỉ vào hình bò"></div>
+    <div class="btn-row">
+      <button class="btn btn-yes" onclick="answerAnimal('cow',true)"> Phải, um bò!</button>
+      <button class="btn btn-no" onclick="answerAnimal('cow',false)">Không phải bò!</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: WARNING (shared) ===================== -->
+  <div id="screen-warning" class="hidden">
+    <div class="warn-wrap">
+      <div class="warn-banner">
+        <div class="warn-title-text" id="warnTitle">CẢNH BÁO!</div>
+        <p class="warn-body" id="warnMsg">...</p>
+        <div class="warn-danger-pill" id="warnLevel"> NGUY HIỂM</div>
+      </div>
+      <div class="warn-progress-bar"><div class="warn-progress-fill" id="warnBar"></div></div>
+      <p style="font-size:.8rem;color:var(--pink);text-align:center;margin-bottom:12px" id="warnCountdownText">Tiếp tục sau 30 giây...</p>
+      <div class="text-center">
+        <button class="btn btn-primary" id="warnNextBtn">Đã rõ, tôi sẽ ngoan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: WISH ===================== -->
+  <div id="screen-wish" class="hidden">
+    <div class="progress-row">
+      <div class="progress-dot done"></div><div class="progress-dot done"></div>
+      <div class="progress-dot done"></div><div class="progress-dot done"></div>
+      <div class="progress-dot active"></div>
+    </div>
+    <div class="step-label">Bước 5 / 5 — Bước cuối rồi! </div>
+    <div class="text-center" style="margin-bottom:12px">
+      <span class="name-display" id="wishBadge"><span id="wishNameLabel">Lanh</span></span>
+    </div>
+    <h1>Lời Chúc </h1>
+    <p class="subtitle">Nhân dịp sinh nhật 13/11, bạn có điều gì muốn gởi đến Phương Anh iu dấu của các bạn không?</p>
+    <div class="capy-wrapper"><img class="capy-art" src="capybara/happybirthday.png" alt="Capybara vẽ tay"></div>
+    <div class="input-wrap">
+      <textarea id="wishInput" placeholder="Viết lời chúc của bạn tại đây... " maxlength="250"></textarea>
+    </div>
+    <div id="wishError" class="error-msg hidden">Có lời chúc nào không? Dù ngắn thôi cũm được </div>
+    <div class="save-status" id="saveStatus"></div>
+    <div class="text-center mt-4">
+      <button class="btn btn-primary full-width" onclick="submitWish()" id="submitWishBtn"> Gửi lời chúc!</button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: ENVELOPE ===================== -->
+  <div id="screen-envelope" class="hidden envelope-wrap">
+    <h1 style="margin-bottom:6px">Tui có thiệp mời dành cho bạn</h1>
+    <p class="subtitle">Lời chúc đã được gửi. Cảm ơn bạn đã dành thời gian để chúc tui. Mời bạn mở thiệp sinh nhật.</p>
+    <div class="envelope-card" onclick="openInvite()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvite()}" aria-label="Mở thiệp mời sinh nhật" style="max-width:420px;margin:0 auto;position:relative;">
+      <div class="env-flap"></div>
+      <div class="env-flap-left"></div>
+      <div class="env-flap-right"></div>
+      <div class="env-body">
+        <div class="env-kicker">Một lời mời đặc biệt đến</div>
+        <div class="env-label">Sinh nhật<br/>Phương Anh</div>
+        <div class="env-invite-line">Bạn được mời</div>
+        <div class="env-monogram" id="envGuestName">Guest</div>
+        <div class="env-guest-name">
+          <span id="envGuestBadges"></span>
+        </div>
+        <div class="env-tap">Chạm để mở thiệp</div>
+        <div class="env-date">13 · 11 · 2026</div>
+      </div>
+    </div>
+    <div class="text-center mt-4" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="openInvite()">Mở thiệp mời</button>
+      <button class="btn btn-no" onclick="restartFlow()">Làm mới</button>
+    </div>
+  </div>
+</div><!-- /card -->
+
+<script>
+/* Supabase settings are loaded from supabase-config.js.
+   Database schema and access policies: supabase/schema.sql. */
+const SUPABASE_URL      = window.BDAY_SUPABASE_CONFIG?.url || '';
+const SUPABASE_ANON_KEY = window.BDAY_SUPABASE_CONFIG?.anonKey || '';
+const SUPABASE_READY = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+let db = null;
+if (SUPABASE_READY && window.supabase) {
+  db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+/* ================================================================
+   STATE
+================================================================ */
+const STATE = { name:'', badges:[], isSnake:false, isFrog:false, isCow:false };
+
+/* ================================================================
+   ẢNH CHÂN DUNG BAY NỀN
+================================================================ */
+
+function spawnParticles() {
+  const c = document.getElementById('particles');
+  const portraits = ['photo1.jpg','photo2.jpg','photo3.jpg'];
+  for (let i = 0; i < 28; i++) {
+    const p = document.createElement('img');
+    p.className = 'particle photo-particle';
+    p.src = portraits[i % portraits.length];
+    p.alt = '';
+    p.setAttribute('aria-hidden','true');
+    const size = 50 + Math.random() * 28;
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    const duration = 18 + Math.random() * 12;
+    p.style.animationDuration = duration + 's';
+    p.style.animationDelay = (-Math.random() * duration) + 's';
+    c.appendChild(p);
+  }
+}
+spawnParticles();
+
+/* ================================================================
+   CONFETTI
+================================================================ */
+function confettiBurst() {
+  const cols=['#ff6fad','#ffd700','#66BB6A','#64B5F6','#ff3d8b','#ffb3d1','#fff'];
+  for (let i=0;i<70;i++) {
+    setTimeout(()=>{
+      const el=document.createElement('div');el.className='confetti-piece';
+      el.style.left=(15+Math.random()*70)+'vw';el.style.top='-10px';
+      el.style.background=cols[Math.floor(Math.random()*cols.length)];
+      el.style.width=(5+Math.random()*9)+'px';el.style.height=(5+Math.random()*9)+'px';
+      el.style.borderRadius=Math.random()>.5?'50%':'2px';
+      el.style.animationDuration=(1.5+Math.random()*2.5)+'s';
+      document.body.appendChild(el);setTimeout(()=>el.remove(),4000);
+    },Math.random()*700);
+  }
+}
+
+/* ================================================================
+   SCREEN SWITCHER
+================================================================ */
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(s=>s.classList.add('hidden'));
+  const el=document.getElementById(id);
+  el.classList.remove('hidden');
+  el.classList.add('slide-enter');
+  el.addEventListener('animationend',()=>el.classList.remove('slide-enter'),{once:true});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ================================================================
+   BADGE UTILS
+================================================================ */
+function renderBadgesTo(containerId, nameSpanId) {
+  const el=document.getElementById(containerId);
+  const nameEl=document.getElementById(nameSpanId);
+  nameEl.textContent=STATE.name;
+  el.querySelectorAll('.badge-title').forEach(b=>b.remove());
+  STATE.badges.forEach(b=>{
+    const span=document.createElement('span');
+    span.className='badge-title';span.innerHTML=b;
+    el.appendChild(span);
+  });
+}
+
+/* ================================================================
+   PASSWORD
+================================================================ */
+function checkPwd() {
+  const val=document.getElementById('pwdInput').value.trim();
+  const err=document.getElementById('pwdError');
+  if (val==='1111') { err.classList.add('hidden'); showScreen('screen-name'); }
+  else {
+    err.classList.remove('hidden');
+    const inp=document.getElementById('pwdInput');
+    inp.classList.add('error-shake');
+    inp.addEventListener('animationend',()=>inp.classList.remove('error-shake'),{once:true});
+    inp.value='';
+  }
+}
+
+/* ================================================================
+   NAME
+================================================================ */
+function submitName() {
+  const val=document.getElementById('nameInput').value.trim();
+  if (!val){document.getElementById('nameError').classList.remove('hidden');return;}
+  document.getElementById('nameError').classList.add('hidden');
+  STATE.name=val; STATE.badges=[];
+  renderBadgesTo('snakeBadge','snakeNameLabel');
+  showScreen('screen-snake');
+}
+
+/* ================================================================
+   ANIMAL ANSWERS — central handler
+================================================================ */
+const NEXT_SCREENS = {snake:'frog', frog:'cow', cow:'wish'};
+const BADGE_MAP = {
+  snake:'Rắn Vương', frog:'Ếch Chúa', cow:'Bò Thần'
+};
+const BADGE_CONTAINERS = {frog:'frogBadge', cow:'cowBadge', wish:'wishBadge'};
+const BADGE_NAMES = {frog:'frogNameLabel', cow:'cowNameLabel', wish:'wishNameLabel'};
+
+const ANIMAL_LABELS = {snake:'rắn', frog:'ếch', cow:'bò'};
+
+function answerAnimal(animal, isYes) {
+  const stateKey = 'is' + animal.charAt(0).toUpperCase() + animal.slice(1);
+  STATE[stateKey] = isYes;
+  if (isYes) STATE.badges.push(BADGE_MAP[animal]);
+  goAfterAnimal(animal);
+}
+
+function showWarn() {
+  const findings = Object.entries(ANIMAL_LABELS)
+    .filter(([animal]) => STATE['is' + animal.charAt(0).toUpperCase() + animal.slice(1)])
+    .map(([, label]) => label);
+  const count = findings.length;
+  const list = findings.join(', ');
+
+  document.getElementById('warnTitle').textContent = 'Ôi không! Báo động!';
+  document.getElementById('warnMsg').innerHTML = `Tiệc sinh nhật của Phương Anh vốn không nên có mấy "động vật" như <strong>${list}</strong> xuất hiện. <strong>${STATE.name}</strong> lập tức bị đưa vào <strong>diện nguy hiểm</strong> và sẽ được theo dõi sát sao. Muốn được xem xét giảm án thì nhớ mang quà nhé hí hí ~~`;
+  document.getElementById('warnLevel').textContent = 'Tình trạng: nằm trong diện theo dõi';
+
+  const duration = 30;
+  const bar = document.getElementById('warnBar');
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  setTimeout(() => { bar.style.transition = `width ${duration}s linear`; bar.style.width = '0%'; }, 50);
+
+  let countDown = duration;
+  document.getElementById('warnCountdownText').textContent = `Tiếp tục sau ${countDown} giây...`;
+  showScreen('screen-warning');
+  const timer = setInterval(() => {
+    countDown--;
+    document.getElementById('warnCountdownText').textContent = `Tiếp tục sau ${countDown} giây...`;
+    if (countDown <= 0) finish();
+  }, 1000);
+  document.getElementById('warnNextBtn').onclick = finish;
+
+  function finish() {
+    clearInterval(timer);
+    showScreen('screen-wish');
+  }
+}
+
+function goAfterAnimal(animal) {
+  const next = NEXT_SCREENS[animal];
+  if (next === 'frog') {
+    renderBadgesTo('frogBadge','frogNameLabel');
+    showScreen('screen-frog');
+  } else if (next === 'cow') {
+    renderBadgesTo('cowBadge','cowNameLabel');
+    showScreen('screen-cow');
+  } else {
+    renderBadgesTo('wishBadge','wishNameLabel');
+    if (STATE.badges.length) showWarn();
+    else showScreen('screen-wish');
+  }
+}
+
+/* ================================================================
+   WISH + SAVE
+================================================================ */
+async function submitWish() {
+  const val=document.getElementById('wishInput').value.trim();
+  if (!val){document.getElementById('wishError').classList.remove('hidden');return;}
+  document.getElementById('wishError').classList.add('hidden');
+
+  const btn=document.getElementById('submitWishBtn');
+  const status=document.getElementById('saveStatus');
+  btn.disabled=true; btn.textContent='Đang gửi... ';
+  status.textContent='';
+
+  const data={
+    name: STATE.name,
+    wish: val,
+    badges: STATE.badges.join(','),
+    created_at: new Date().toISOString()
+  };
+
+  let saved=false;
+  if (SUPABASE_READY && db) {
+    try{
+      const {error}=await db.from('wishes').insert([{name:data.name,wish:data.wish,badges:data.badges}]);
+      if(!error) saved=true;
+    }catch(e){console.warn('Supabase error:',e);}
+  }
+  if (!saved) {
+    // localStorage fallback
+    const all=JSON.parse(localStorage.getItem('bday_wishes')||'[]');
+    all.push(data);
+    localStorage.setItem('bday_wishes',JSON.stringify(all));
+  }
+
+  // Show envelope
+  document.getElementById('envGuestName').textContent=STATE.name;
+  const badgeDiv=document.getElementById('envGuestBadges');
+  badgeDiv.innerHTML='';
+  STATE.badges.forEach(b=>{
+    const span=document.createElement('span');
+    span.className='badge-title';span.innerHTML=b;
+    badgeDiv.appendChild(span);
+  });
+
+  confettiBurst();
+  btn.disabled=false; btn.textContent=' Gửi lời chúc!';
+  showScreen('screen-envelope');
+}
+
+/* ================================================================
+   OPEN INVITE
+================================================================ */
+function openInvite(){window.open('invite.html','_blank');}
+
+/* ================================================================
+   RESTART
+================================================================ */
+function restartFlow(){
+  STATE.name='';STATE.badges=[];STATE.isSnake=false;STATE.isFrog=false;STATE.isCow=false;
+  document.getElementById('nameInput').value='';
+  document.getElementById('wishInput').value='';
+  document.getElementById('pwdInput').value='';
+  showScreen('screen-name');
+}
+
+/* ================================================================
+   KEYBOARD
+================================================================ */
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  if(!document.getElementById('screen-pwd').classList.contains('hidden'))checkPwd();
+  else if(!document.getElementById('screen-name').classList.contains('hidden'))submitName();
+  else if(!document.getElementById('screen-wish').classList.contains('hidden'))submitWish();
+});
+</script>
+</body>
+</html>
