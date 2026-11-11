@@ -33,7 +33,7 @@
         <h2>Chỉ dành cho chủ tiệc</h2>
         <p>Đăng nhập để mở hộp thư riêng và đọc những lời chúc mọi người gửi.</p>
         <form id="loginForm">
-          <div class="field"><label for="username">Tên đăng nhập</label><input id="username" name="username" autocomplete="username" value="huuhuydng" required /></div>
+          <div class="field"><label for="email">Email quản trị</label><input id="email" name="email" type="email" autocomplete="username" placeholder="Nhập email tài khoản Supabase" required /></div>
           <div class="field"><label for="password">Mật khẩu</label><input id="password" name="password" type="password" autocomplete="current-password" required /></div>
           <button class="primary" id="loginButton" type="submit">Mở hộp thư</button>
         </form>
@@ -83,21 +83,12 @@
     button.disabled = true;
     button.textContent = 'Đang mở hộp thư…';
     loginMessage.textContent = '';
-    const { data, error } = await db.functions.invoke('admin-login', {
-      body: {
-        username: document.getElementById('username').value.trim(),
-        password: document.getElementById('password').value
-      }
+    const { error } = await db.auth.signInWithPassword({
+      email: document.getElementById('email').value.trim(),
+      password: document.getElementById('password').value
     });
-    if (error || !data?.session) {
-      loginMessage.textContent = 'Tên đăng nhập hoặc mật khẩu chưa đúng. Bạn thử lại nhé.';
-      button.disabled = false;
-      button.textContent = 'Mở hộp thư';
-      return;
-    }
-    const { error: sessionError } = await db.auth.setSession(data.session);
-    if (sessionError) {
-      loginMessage.textContent = 'Chưa mở được phiên đăng nhập. Vui lòng thử lại.';
+    if (error) {
+      loginMessage.textContent = 'Đăng nhập không thành công. Kiểm tra email và mật khẩu nhé.';
       button.disabled = false;
       button.textContent = 'Mở hộp thư';
       return;
