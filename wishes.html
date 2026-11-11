@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8eef2" />
+  <title>Những lời chúc dành cho Phương Anh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <style>
+    :root{color-scheme:light;--rose:#a93662;--pink:#d45c88;--blush:#fae8ef;--paper:#fffdfd;--ink:#382b31;--muted:#806d75;--line:#f0d8e1;--shadow:0 24px 70px rgba(102,48,69,.11)}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font-family:'Be Vietnam Pro',sans-serif;background:radial-gradient(ellipse at 8% 8%,#f3dfe7 0,transparent 34%),radial-gradient(ellipse at 92% 92%,#f6e2e9 0,transparent 35%),#fbf5f7}
+    button,input{font:inherit}button{cursor:pointer}.shell{width:min(1100px,calc(100% - 36px));margin:auto;padding:34px 0 56px}.topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;color:var(--muted);font-size:13px;letter-spacing:.08em;text-transform:uppercase}.topline a{color:inherit;text-decoration:none}.topline a:hover{color:var(--rose)}
+    .hero{background:var(--paper);border:1px solid var(--line);border-radius:30px;padding:clamp(26px,5vw,54px);box-shadow:var(--shadow)}.eyebrow{margin:0 0 10px;color:var(--pink);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}.hero h1{font:700 clamp(34px,6vw,56px)/1.08 'Playfair Display',serif;color:var(--rose);margin:0}.intro{color:var(--muted);margin:13px 0 0;line-height:1.7}.rule{height:1px;background:var(--line);margin:30px 0}
+    .login-wrap{max-width:470px;margin:0 auto;text-align:center}.login-wrap h2{font:600 26px 'Playfair Display',serif;color:var(--rose);margin:0 0 8px}.login-wrap p{color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 22px}.field{text-align:left;margin:0 0 14px}.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:0 0 7px}.field input,.search{width:100%;border:1px solid var(--line);background:#fff9fb;border-radius:13px;padding:14px 15px;outline:none;color:var(--ink);transition:.2s}.field input:focus,.search:focus{border-color:var(--pink);box-shadow:0 0 0 4px #f8e6ed}.primary{border:0;border-radius:13px;background:linear-gradient(120deg,#cf5683,#a93662);color:white;font-weight:700;padding:14px 22px;box-shadow:0 10px 22px #a936622b;transition:transform .2s,box-shadow .2s}.primary:hover{transform:translateY(-1px);box-shadow:0 14px 28px #a9366238}.login-wrap .primary{width:100%;margin-top:6px}.message{min-height:22px;margin-top:14px;color:var(--rose);font-size:13px}.hidden{display:none!important}
+    .dashboard{margin-top:24px}.dash-head{display:flex;justify-content:space-between;gap:18px;align-items:end;flex-wrap:wrap}.dash-head h2{font:600 30px 'Playfair Display',serif;color:var(--rose);margin:0}.dash-head p{font-size:13px;color:var(--muted);margin:6px 0 0}.tools{display:flex;gap:10px;align-items:center}.search{width:min(320px,55vw);padding:11px 14px}.secondary{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 16px;color:var(--rose);font-weight:600}.secondary:hover{background:#fff5f8}.summary{display:flex;gap:12px;align-items:center;margin:22px 0 18px}.count{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:42px;border-radius:50%;background:var(--blush);color:var(--rose);font-weight:700}.summary span:last-child{font-size:13px;color:var(--muted)}
+    .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.wish{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 21px;box-shadow:0 8px 24px rgba(102,48,69,.05);animation:appear .35s ease both}.wish-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:13px}.sender{font-weight:700;color:var(--rose)}.date{font-size:11px;color:#9b8990;white-space:nowrap}.wish-text{margin:0;line-height:1.75;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.badge{border:1px solid #efc4d4;border-radius:999px;background:#fff5f8;padding:5px 10px;color:#a34669;font-size:11px;font-weight:600}.empty{grid-column:1/-1;padding:38px 20px;text-align:center;border:1px dashed var(--line);border-radius:18px;color:var(--muted);line-height:1.7}.foot{margin-top:24px;text-align:center;color:#a18d95;font-size:11px;letter-spacing:.06em}
+    @keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}@media(max-width:650px){.shell{width:min(100% - 22px,1100px);padding-top:18px}.hero{border-radius:22px;padding:25px 19px}.list{grid-template-columns:1fr}.dash-head{align-items:stretch}.tools{width:100%}.search{width:100%;flex:1}.secondary{white-space:nowrap}.topline{font-size:10px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topline"><a href="./">PHƯƠNG ANH · SINH NHẬT</a><span>Góc lưu giữ lời thương</span></div>
+    <section class="hero">
+      <p class="eyebrow">Một chiếc hộp thư nhỏ</p>
+      <h1>Những lời chúc</h1>
+      <p class="intro">Từng lời nhắn gửi đến Phương Anh, được cất lại thật gọn gàng để mình đọc sau ngày vui.</p>
+      <div class="rule"></div>
+      <section id="loginPanel" class="login-wrap">
+        <h2>Chỉ dành cho chủ tiệc</h2>
+        <p>Đăng nhập để mở hộp thư riêng và đọc những lời chúc mọi người gửi.</p>
+        <form id="loginForm">
+          <div class="field"><label for="username">Tên đăng nhập</label><input id="username" name="username" autocomplete="username" value="huuhuydng" required /></div>
+          <div class="field"><label for="password">Mật khẩu</label><input id="password" name="password" type="password" autocomplete="current-password" required /></div>
+          <button class="primary" id="loginButton" type="submit">Mở hộp thư</button>
+        </form>
+        <div class="message" id="loginMessage" role="status" aria-live="polite"></div>
+      </section>
+      <section id="dashboard" class="dashboard hidden">
+        <div class="dash-head"><div><h2>Thư gửi Phương Anh</h2><p id="updatedAt">Tất cả lời chúc được lưu tại đây.</p></div><div class="tools"><input id="search" class="search" type="search" placeholder="Tìm tên hoặc lời chúc" aria-label="Tìm tên hoặc lời chúc"/><button id="refresh" class="secondary" type="button">Làm mới</button><button id="logout" class="secondary" type="button">Đăng xuất</button></div></div>
+        <div class="summary"><span id="count" class="count">0</span><span>lời chúc đã được gửi</span></div>
+        <div id="wishList" class="list" aria-live="polite"></div>
+        <div class="message" id="dataMessage" role="status" aria-live="polite"></div>
+      </section>
+    </section>
+    <div class="foot">LƯU LẠI NHỮNG ĐIỀU DỄ THƯƠNG</div>
+  </main>
+<script>
+(() => {
+  const config = window.BDAY_SUPABASE_CONFIG;
+  const loginPanel = document.getElementById('loginPanel');
+  const dashboard = document.getElementById('dashboard');
+  const loginMessage = document.getElementById('loginMessage');
+  const dataMessage = document.getElementById('dataMessage');
+  let db = null;
+  let wishes = [];
+
+  if (config?.url && config?.anonKey && window.supabase) {
+    db = window.supabase.createClient(config.url, config.anonKey);
+  } else {
+    loginMessage.textContent = 'Chưa kết nối được hộp thư. Vui lòng thử tải lại trang.';
+  }
+
+  function showDashboard() {
+    loginPanel.classList.add('hidden');
+    dashboard.classList.remove('hidden');
+    loadWishes();
+  }
+
+  async function restoreSession() {
+    if (!db) return;
+    const { data: { session } } = await db.auth.getSession();
+    if (session) showDashboard();
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!db) return;
+    const button = document.getElementById('loginButton');
+    button.disabled = true;
+    button.textContent = 'Đang mở hộp thư…';
+    loginMessage.textContent = '';
+    const { data, error } = await db.functions.invoke('admin-login', {
+      body: {
+        username: document.getElementById('username').value.trim(),
+        password: document.getElementById('password').value
+      }
+    });
+    if (error || !data?.session) {
+      loginMessage.textContent = 'Tên đăng nhập hoặc mật khẩu chưa đúng. Bạn thử lại nhé.';
+      button.disabled = false;
+      button.textContent = 'Mở hộp thư';
+      return;
+    }
+    const { error: sessionError } = await db.auth.setSession(data.session);
+    if (sessionError) {
+      loginMessage.textContent = 'Chưa mở được phiên đăng nhập. Vui lòng thử lại.';
+      button.disabled = false;
+      button.textContent = 'Mở hộp thư';
+      return;
+    }
+    button.disabled = false;
+    button.textContent = 'Mở hộp thư';
+    showDashboard();
+  });
+
+  async function loadWishes() {
+    dataMessage.textContent = 'Đang gom những lời chúc…';
+    const { data, error } = await db.from('wishes').select('id,name,wish,badges,created_at').order('created_at', { ascending: false });
+    if (error) {
+      wishes = [];
+      dataMessage.textContent = 'Chưa tải được lời chúc. Kiểm tra kết nối rồi bấm “Làm mới” nhé.';
+      render();
+      return;
+    }
+    wishes = data || [];
+    dataMessage.textContent = '';
+    document.getElementById('updatedAt').textContent = `Đã cập nhật lúc ${new Intl.DateTimeFormat('vi-VN', { hour: '2-digit', minute: '2-digit' }).format(new Date())}.`;
+    render();
+  }
+
+  function escapeHTML(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  }
+
+  function render() {
+    const query = document.getElementById('search').value.trim().toLocaleLowerCase('vi');
+    const filtered = wishes.filter(item => `${item.name || ''} ${item.wish || ''}`.toLocaleLowerCase('vi').includes(query));
+    document.getElementById('count').textContent = String(wishes.length);
+    const list = document.getElementById('wishList');
+    if (!filtered.length) {
+      list.innerHTML = `<div class="empty">${wishes.length ? 'Không tìm thấy lời chúc phù hợp.' : 'Hộp thư vẫn đang chờ những lời nhắn đầu tiên.'}</div>`;
+      return;
+    }
+    list.innerHTML = filtered.map(item => {
+      const date = item.created_at ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.created_at)) : '';
+      const badges = Array.isArray(item.badges) ? item.badges : [];
+      return `<article class="wish"><div class="wish-top"><span class="sender">${escapeHTML(item.name || 'Một người bạn')}</span><time class="date">${escapeHTML(date)}</time></div><p class="wish-text">${escapeHTML(item.wish)}</p>${badges.length ? `<div class="badges">${badges.map(badge => `<span class="badge">${escapeHTML(badge)}</span>`).join('')}</div>` : ''}</article>`;
+    }).join('');
+  }
+
+  document.getElementById('search').addEventListener('input', render);
+  document.getElementById('refresh').addEventListener('click', loadWishes);
+  document.getElementById('logout').addEventListener('click', async () => {
+    await db.auth.signOut();
+    dashboard.classList.add('hidden');
+    loginPanel.classList.remove('hidden');
+    document.getElementById('password').value = '';
+    loginMessage.textContent = 'Đã đăng xuất khỏi hộp thư.';
+  });
+  restoreSession();
+})();
+</script>
+</body>
+</html>
